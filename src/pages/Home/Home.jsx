@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/layout/Header/Header";
 import TodoInput from "../../components/Todo/TodoInput";
 import TodoItem from "../../components/Todo/TodoItem";
+import TodoFilter from "../../components/Todo/TodoFilter";
 
 const Home = () => {
-  // 1. 儲存所有待辦事項的狀態
-  const [todos, setTodos] = useState([]);
+  // 從 localStorage 讀取初始資料
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
+  // 新增篩選狀態
+  const [filter, setFilter] = useState("all");
+
+  // 當 todos 改變時，儲存到 localStorage
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   // 2. 處理新增待辦事項
   const handleAddTodo = (text) => {
@@ -32,16 +44,24 @@ const Home = () => {
     );
   };
 
+  // 根據篩選條件過濾待辦事項
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
+  });
+
   return (
     <div className="home">
       <Header />
       <main className="main-content">
         {/* 5. 傳遞處理函數給 TodoInput */}
         <TodoInput onAdd={handleAddTodo} />
+        <TodoFilter filter={filter} setFilter={setFilter} />
 
         {/* 6. 顯示待辦事項列表 */}
         <div className="todo-list">
-          {todos.map((todo) => (
+          {filteredTodos.map((todo) => (
             <TodoItem
               key={todo.id}
               todo={todo}
