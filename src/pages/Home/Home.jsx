@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/layout/Header/Header";
 import TodoInput from "../../components/Todo/TodoInput";
-import TodoItem from "../../components/Todo/TodoItem";
 import TodoFilter from "../../components/Todo/TodoFilter";
+import TodoList from "../../components/Todo/TodoList";
 
 const Home = () => {
   // 從 localStorage 讀取初始資料
@@ -80,17 +80,12 @@ const Home = () => {
         />
 
         {/* 6. 顯示待辦事項列表 */}
-        <div className="todo-list">
-          {filteredTodos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onDelete={handleDeleteTodo}
-              onToggle={handleToggleTodo}
-              onEdit={handleEditTodo}
-            />
-          ))}
-        </div>
+        <TodoList
+          todos={filteredTodos}
+          onDelete={handleDeleteTodo}
+          onToggle={handleToggleTodo}
+          onEdit={handleEditTodo}
+        />
       </main>
     </div>
   );
