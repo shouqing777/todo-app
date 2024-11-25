@@ -44,6 +44,13 @@ const Home = () => {
     );
   };
 
+  // 新增編輯功能
+  const handleEditTodo = (id, newText) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo))
+    );
+  };
+
   // 根據篩選條件過濾待辦事項
   const filteredTodos = todos.filter((todo) => {
     if (filter === "active") return !todo.completed;
@@ -51,13 +58,26 @@ const Home = () => {
     return true;
   });
 
+  // 新增清除已完成項目的函數
+  const handleClearCompleted = () => {
+    setTodos(todos.filter((todo) => !todo.completed));
+  };
+
+  // 計算未完成項目數量
+  const activeItemCount = todos.filter((todo) => !todo.completed).length;
+
   return (
     <div className="home">
       <Header />
       <main className="main-content">
         {/* 5. 傳遞處理函數給 TodoInput */}
         <TodoInput onAdd={handleAddTodo} />
-        <TodoFilter filter={filter} setFilter={setFilter} />
+        <TodoFilter
+          filter={filter}
+          setFilter={setFilter}
+          onClearCompleted={handleClearCompleted}
+          itemCount={activeItemCount}
+        />
 
         {/* 6. 顯示待辦事項列表 */}
         <div className="todo-list">
@@ -67,6 +87,7 @@ const Home = () => {
               todo={todo}
               onDelete={handleDeleteTodo}
               onToggle={handleToggleTodo}
+              onEdit={handleEditTodo}
             />
           ))}
         </div>

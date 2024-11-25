@@ -116,8 +116,34 @@ body {
 
 .todo-filter {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
   margin: 20px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.todo-filter__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.todo-filter__count {
+  color: #6c757d;
+}
+
+.todo-filter__clear {
+  padding: 4px 8px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.todo-filter__clear:hover {
+  background: #c82333;
 }
 
 .todo-filter button {
@@ -140,4 +166,42 @@ body {
 
 .todo-filter button.active:hover {
   background: #0056b3;
+}
+
+.todo-item__edit-form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.todo-item__edit-form input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.todo-item__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-item__actions button {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.todo-item__actions button:first-child {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.todo-item__actions button:last-child {
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
 }

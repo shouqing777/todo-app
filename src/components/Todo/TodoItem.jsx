@@ -1,30 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 
-const TodoItem = ({ todo, onDelete, onToggle }) => {
-  // todo: 包含 {id, text, completed} 的物件
-  // onDelete: 從父元件傳來的刪除函數
-  // onToggle: 從父元件傳來的切換完成狀態函數
+const TodoItem = ({ todo, onDelete, onToggle, onEdit }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(todo.text);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editText.trim()) {
+      onEdit(todo.id, editText);
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="todo-item">
-      {/* 1. 核取方塊：控制待辦事項的完成狀態 */}
-      <input
-        type="checkbox"
-        checked={todo.completed} // 綁定完成狀態
-        onChange={() => onToggle(todo.id)} // 點擊時切換狀態
-      />
-
-      {/* 2. 待辦事項文字：完成時會有刪除線 */}
-      <span
-        style={{
-          textDecoration: todo.completed ? "line-through" : "none",
-        }}
-      >
-        {todo.text}
-      </span>
-
-      {/* 3. 刪除按鈕 */}
-      <button onClick={() => onDelete(todo.id)}>刪除</button>
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="todo-item__edit-form">
+          <input
+            type="text"
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            autoFocus
+          />
+          <button type="submit">保存</button>
+          <button type="button" onClick={() => setIsEditing(false)}>
+            取消
+          </button>
+        </form>
+      ) : (
+        <>
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => onToggle(todo.id)}
+          />
+          <span
+            style={{
+              textDecoration: todo.completed ? "line-through" : "none",
+            }}
+            onDoubleClick={() => setIsEditing(true)}
+          >
+            {todo.text}
+          </span>
+          <div className="todo-item__actions">
+            <button onClick={() => setIsEditing(true)}>編輯</button>
+            <button onClick={() => onDelete(todo.id)}>刪除</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
